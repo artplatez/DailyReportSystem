@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="constants.AttributeConst" %>
-<%--jsp에서 java의클래스 불러오기. 패키지명.클래스명 으로 기술--%>
 <%@ page import="constants.ForwardConst" %>
 
 <c:set var="actEmp" value="${ForwardConst.ACT_EMP.getValue()}" />
