@@ -84,7 +84,7 @@ public class EmployeeConverter {
 	 * @param e DTO모델(붙여넣을곳)
 	 * @param ev View모델(복사를 따올곳)
 	 */
-	public static void copViewToModel(Employee e, EmployeeView ev) {
+	public static void copyViewToModel(Employee e, EmployeeView ev) {
 		e.setId(ev.getId());
 		e.setCode(ev.getCode());
 		e.setName(ev.getName());
