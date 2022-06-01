@@ -3,7 +3,7 @@
 <%@ page import="constants.AttributeConst" %>
 <%@ page import="constants.ForwardConst" %>
 
-<c:set var="action" value="${ForwardConst,ACT_AUTH.getValue()}" />
+<c:set var="action" value="${ForwardConst.ACT_AUTH.getValue()}" />
 <c:set var="command" value="${ForwardConst.CMD_LOGIN.getValue()}" />
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
@@ -13,7 +13,7 @@
 				社員番号かパスワードが間違っています。
 				</div>
 			</c:if>
-			<c:if test="#{flush != null}">
+			<c:if test="${flush != null}">
 				<div id="flush_success">
 					<c:out value="${flush}"></c:out>
 					</div>
@@ -25,6 +25,9 @@
 			<br /><br/>
 
 			<label for="${AttributeConst.EMP_PASS.getValue()}">パスワード</label><br />
+			<input type="password" name="${AttributeConst.EMP_PASS.getValue()}" />
+			<br/><br/>
+
 			<input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
 			<button type="submit">ログイン</button>
 		</form>
