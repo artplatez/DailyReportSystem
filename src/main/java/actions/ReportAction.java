@@ -148,7 +148,11 @@ public class ReportAction extends ActionBase {
 			forward(ForwardConst.FW_REP_SHOW);
 		}
 	}
-
+/**
+ * 日報edit
+ * @throws ServletException
+ * @throws IOException
+ */
 	public void edit() throws ServletException, IOException {
 
 		//idを条件に日報データを取得
@@ -168,6 +172,39 @@ public class ReportAction extends ActionBase {
 			forward(ForwardConst.FW_REP_EDIT);
 		}
 
+	}
+	public void update() throws ServletException, IOException {
+		//CSRF
+		if(checkToken()) {
+			//idを条件に日報データを取得する
+			ReportView rv= service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+
+			//入力された日報内容を設定
+			rv.setReportDate(toLocalDate(getRequestParam(AttributeConst.REP_DATE)));
+			rv.setTitle(getRequestParam(AttributeConst.REP_TITLE));
+			rv.setContent(getRequestParam(AttributeConst.REP_CONTENT));
+
+			//日報データを更新
+			List<String> errors = service.update(rv);
+
+			if(errors.size() > 0) {
+				//更新中にエラーが発生した場合
+				putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF
+				putRequestScope(AttributeConst.REPORT, rv); //入力された内容
+				putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
+
+				//編集画面を再表示
+				forward(ForwardConst.FW_REP_EDIT);
+			}else {
+				//更新中にエラーがなかった場合
+				//sessionに更新完了のフラッシュメッセージを設定
+				putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
+
+				//一覧画面にリダイレクト
+				redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
+			}
+
+		}
 	}
 
 }
