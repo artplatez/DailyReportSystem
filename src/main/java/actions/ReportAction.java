@@ -76,6 +76,11 @@ public class ReportAction extends ActionBase {
 		//新規登録画面を表示
 		forward(ForwardConst.FW_REP_NEW);
 	}
+	/**
+	 * 新規登録
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 
 	public void create() throws ServletException, IOException {
 
@@ -122,6 +127,21 @@ public class ReportAction extends ActionBase {
 				//一覧画面にリダイレクト
 				redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
 			}
+		}
+	}
+
+	public void show() throws ServletException, IOException {
+		//idを条件に日報データを取得
+		ReportView rv= service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+
+		if(rv == null) {
+			//該当の日報データが存在しない場合エラー画面を表示
+			forward(ForwardConst.FW_ERR_UNKNOWN);
+
+		} else {
+			putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+			//詳細画面表示
+			forward(ForwardConst.FW_REP_SHOW);
 		}
 	}
 
