@@ -173,6 +173,11 @@ public class ReportAction extends ActionBase {
 		}
 
 	}
+	/**
+	 * update
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void update() throws ServletException, IOException {
 		//CSRF
 		if(checkToken()) {
