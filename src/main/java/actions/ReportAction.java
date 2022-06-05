@@ -1,6 +1,7 @@
 package actions;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 //日報に関する処理を行うActionクラス
@@ -56,6 +57,22 @@ public class ReportAction extends ActionBase {
 
 		//一覧画面を表示
 		forward(ForwardConst.FW_REP_INDEX);
+	}
+	/**
+	 * 新規登録画面を表示
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	public void entryNew() throws ServletException, IOException {
+		putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF
+
+		//日報情報の空インスタンスに、日報の日付＝今日の日付を設定
+		ReportView rv= new ReportView();
+		rv.setReportDate(LocalDate.now());//사전에 오늘의 날짜를 습득해서 수납. 일지작성시 오늘날짜가 자동으로 입력되어있는것이 더 편하기떄문
+		putRequestScope(AttributeConst.REPORT, rv); //日付のみ設定ずみの日報インスタンス
+
+		//新規登録画面を表示
+		forward(ForwardConst.FW_REP_NEW);
 	}
 
 }
