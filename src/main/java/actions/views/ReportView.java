@@ -34,4 +34,6 @@ public class ReportView {
 
 	private LocalDateTime updatedAt;
 
+	private Integer likeCount;
+
 }

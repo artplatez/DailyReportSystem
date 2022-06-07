@@ -13,6 +13,7 @@ public enum AttributeConst {
     MAX_ROW("maxRow"),
     PAGE("page"),
 
+
     //入力フォーム共通
     TOKEN("_token"),
     ERR("errors"),
