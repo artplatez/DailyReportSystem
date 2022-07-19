@@ -21,16 +21,19 @@ import lombok.Setter;
 
 @Table(name = JpaConst.TABLE_LIKE)
 @NamedQueries({
-    @NamedQuery(
-            name = JpaConst.Q_LIKE_GET_ALL,
-            query = JpaConst.Q_LIKE_GET_ALL_DEF),
-    @NamedQuery(
-            name = JpaConst.Q_LIKE_COUNT,
-            query = JpaConst.Q_LIKE_COUNT_DEF)
+	@NamedQuery(
+			name= JpaConst.Q_LIKE_GET_ALL,
+			query = JpaConst.Q_LIKE_GET_ALL_DEF),
+	@NamedQuery(
+			name = JpaConst.Q_LIKE_COUNT,
+			query = JpaConst.Q_LIKE_COUNT_DEF),
+	@NamedQuery(
+			name = JpaConst.Q_LIKE_GET_ALL_MINE,
+			query = JpaConst.Q_LIKE_GET_ALL_MINE_DEF),
+	@NamedQuery(
+			name = JpaConst.Q_LIKE_COUNT_ALL_MINE,
+			query = JpaConst.Q_LIKE_COUNT_ALL_MINE_DEF)
 })
-   /** @NamedQuery(
-    		name = JpaConst.Q_LIKE_GET_ALL_MINE,
-    		query = JpaConst.Q_LIKE_GET_ALL_MINE_DEF)**/
 
 @Getter //모든 클래스필드에대해 겟터 자동생성 (Lombok)
 @Setter //모든 클래스필드에 대해 셋터 자동생성

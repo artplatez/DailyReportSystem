@@ -9,16 +9,19 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import actions.views.EmployeeView;
+import actions.views.LikeView;
 import actions.views.ReportView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import services.LikeService;
 import services.ReportService;
 
 public class ReportAction extends ActionBase {
 
 	private ReportService service;
+	private LikeService likeService;
 
 	//メッそどを実行
 
@@ -26,10 +29,12 @@ public class ReportAction extends ActionBase {
 	public void process() throws ServletException, IOException {
 
 		service = new ReportService();
+		likeService = new LikeService();
 
 		//methodを実行
 		invoke();
 		service.close();
+		likeService.close();
 	}
 	/**
 	 * 一覧画面を表示する
@@ -108,7 +113,6 @@ public class ReportAction extends ActionBase {
 					null,
 					null,
 					0);
-
 			//日報情報登録
 			List<String> errors = service.create(rv);
 
@@ -136,8 +140,16 @@ public class ReportAction extends ActionBase {
  * @throws IOException
  */
 	public void show() throws ServletException, IOException {
+
 		//idを条件に日報データを取得
 		ReportView rv= service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+
+		//セッションからログイン中の従業員情報を取得
+	    EmployeeView loginEmployee =(EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+		//ログイン中の従業員が作成した日報データの件数を取得
+        long myReportsCount = service.countAllMine(loginEmployee);
+
+        putRequestScope(AttributeConst.REP_COUNT, myReportsCount); //ログイン中の従業員が作成した日報の数
 
 		if(rv == null) {
 			//該当の日報データが存在しない場合エラー画面を表示
@@ -212,28 +224,59 @@ public class ReportAction extends ActionBase {
 
 		}
 	}
-
 	public void like() throws ServletException, IOException {
 
 			//idを条件に日報データを取得する
 			ReportView rv= service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
-					service.findOne(toNumber(getRequestParam(AttributeConst.EMP_ID)));
-			//入力された日報内容を設定
+
+			EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+
+			LikeView lv= new LikeView(
+					null,
+					rv,
+					ev,
+					null,
+					null);
+
 			rv.setLikeCount(rv.getLikeCount()+1);
-			putRequestScope(AttributeConst.EMP_NAME, AttributeConst.EMP_ID);
 
-			//rv.setEmployee(rv.getEmployee());
 
-			//日報データを更新
 			service.update(rv);
-
-			//sessionに更新完了のフラッシュメッセージを設定
-				putSessionScope(AttributeConst.FLUSH, MessageConst.I_LIKED.getMessage());
-
-				//一覧画面にリダイレクト
-				redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
+			likeService.create(lv);
 
 
-	}
+			putSessionScope(AttributeConst.FLUSH, MessageConst.I_LIKED.getMessage());
 
-}
+			//一覧画面にリダイレクト
+			redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
+		}
+
+	public void showLikes() throws ServletException, IOException {
+		//idを条件に日報データを取得する
+		ReportView rv= service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+		//Login中の従業員が作成した日報データを、指定されたページ数の一覧画面に表示する分取得する
+		int page= getPage();
+		List<LikeView> likes= likeService.getMinePerPage(rv, page);
+		//ログイン中の従業員が作成した日報データの件数を取得
+		long myLikesCount = likeService.countAllMine(rv);
+
+		putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+		putRequestScope(AttributeConst.LIKES, likes); //取得したいいねデータ
+		putRequestScope(AttributeConst.LIKE_COUNT, myLikesCount); //ログイン中の従業員が作成した日報の数
+		putRequestScope(AttributeConst.PAGE, page); //ページ数
+		putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //１ページに表示するレコードの数
+
+		/**
+		LikeView lv= likeService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+
+		putRequestScope(AttributeConst.LIKE, lv); //取得した日報データ
+			//詳細画面表示**/
+			forward(ForwardConst.FW_REP_SHOWLIKES);
+		}	}
+
+
+
+
+
+
+

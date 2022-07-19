@@ -12,14 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-
 public class LikeView {
 
 	private Integer id;
 
-	private EmployeeView employee;
-
 	private ReportView report;
+
+	private EmployeeView employee;
 
 	private LocalDateTime createdAt;
 

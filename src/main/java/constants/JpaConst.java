@@ -92,17 +92,19 @@ public interface JpaConst {
 
 
     String Q_LIKE_GET_ALL = ENTITY_LIKE + ".getAll";
-    String Q_LIKE_GET_ALL_DEF="SELECT l FROM Like AS l WHERE l.report = :" + LIKE_COL_REP + " ORDER BY l.id DESC";
+    String Q_LIKE_GET_ALL_DEF="SELECT l FROM Like AS l WHERE l.report = :" + REP_COL_ID + " ORDER BY l.id DESC";
 
     String Q_LIKE_COUNT = ENTITY_LIKE + ".count";
-    String Q_LIKE_COUNT_DEF ="SELECT COUNT(l) FROM Like AS l WHERE l.report = :" + LIKE_COL_REP;
+    String Q_LIKE_COUNT_DEF ="SELECT l FROM Report AS l ORDER BY l.id DESC";
 
-   /** String Q_LIKE_GET_ALL_MINE = ENTITY_LIKE + ".getAllMine";
-    String Q_LIKE_GET_ALL_MINE_DEF = "SELECT l FROM Like AS l WHERE l.report = :" + LIKE_COL_REP + "ORDER BY l.id DESC";
+    //指定した従業員が作成した日報を全件idの降順で取得する
+    String Q_LIKE_GET_ALL_MINE = ENTITY_LIKE + ".getAllMine";
+    String Q_LIKE_GET_ALL_MINE_DEF = "SELECT l FROM Like AS l WHERE l.report = :" + REP_COL_ID + " ORDER BY l.id DESC";
 
+    //指定した従業員が作成した日報の件数を取得する
     String Q_LIKE_COUNT_ALL_MINE = ENTITY_LIKE + ".countAllMine";
     String Q_LIKE_COUNT_ALL_MINE_DEF = "SELECT COUNT(l) FROM Like AS l WHERE l.report = :" + REP_COL_ID;
-**/
+
 
 
 }

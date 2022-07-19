@@ -30,17 +30,23 @@ public class LikeConverter {
 	 * @param r Report のインスタンス
 	 * @return ReportView のインスタンス
 	 */
+	/**
+	 *
+	 * @param l
+	 * @return
+	 */
 	public static LikeView toView(Like l) {
 		if(l == null) {
 			return null;
 		}
 		return new LikeView(
 				l.getId(),
-				EmployeeConverter.toView(l.getEmployee()),
 				ReportConverter.toView(l.getReport()),
+				EmployeeConverter.toView(l.getEmployee()),
 				l.getCreatedAt(),
 				l.getUpdatedAt());
 	}
+
 	/**
 	 * DTOモデルのリストからViewモデルのリストを作成
 	 * @param list DTOモデルのリスト

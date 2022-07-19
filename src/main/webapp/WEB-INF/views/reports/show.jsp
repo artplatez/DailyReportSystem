@@ -7,6 +7,7 @@
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commEdt" value="${ForwardConst.CMD_EDIT.getValue()}"/>
 <c:set var="commLike" value="${ForwardConst.CMD_LIKE.getValue()}"/>
+<c:set var="commShowLikes" value="${ForwardConst.CMD_SHOWLIKES.getValue() }" />
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
 	<c:param name="content">
@@ -43,11 +44,15 @@
 							</tr>
 							</tbody>
 							</table>
-							<c:choose>
+
+<%--
 				<c:when test="${sessionScope.login_employee.id == report.employee.id}">
 				<p>
 					<a href="<c:url value='?action=${actRep}&command=${commEdt}&id=${report.id}' />">この日報を編集する</a>
 					</p>
+					</c:when>
+					<c:when test="${report.id == like.report.id and sessionScope.login_employee.id == like.employee.id }">
+					<p></p>
 					</c:when>
 					<c:otherwise>
 					<p>
@@ -55,6 +60,17 @@
 					</p>
 					</c:otherwise>
 					</c:choose>
+					--%>
+		  <c:if test="${sessionScope.login_employee.id == report.employee.id}">
+            <p>
+                <a href="<c:url value='?action=${actRep}&command=${commEdt}&id=${report.id}' />">この日報を編集する</a>
+            </p>
+        </c:if>
+        <c:if test="${sessionScope.login_employee.id != report.employee.id} && ${XXX} == 0">
+            <p>
+                <a href="<c:url value='?action=${actRep}&command=${commLike}&id=${report.id}' />">この日報をいいねする</a>
+            </p>
+        </c:if>
 				<p>
 				<a href="<c:url value='?action=${actRep}&command=${commIdx}' />">一覧に戻る</a>
 				</p>
